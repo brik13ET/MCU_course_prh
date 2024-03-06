@@ -17,17 +17,20 @@ uint16_t adc_values_current[8];
 
 int main()
 {
+	D_PORT &= ~(D_OFF_MASK);
 	//unsigned int baudrate = USART_CalcBaud(19200);
 	DISP_Init();
 	KEYPAD_Init();
 	ADC_Init();
 	INT_Init();
+	USART_Init(USART_CalcBaud(1200), 0);
 	
 	LED_DDR |= (LED_MASK | LED_index_MASK | LED_value_MASK);
 	for(uint8_t i = 0; i < sizeof(read_order)/sizeof(read_order[0]); i++)
 		read_order[i] = i;
 	
-	LED_PORT |= LED_MASK;
+	D_PORT |= D_OFF_MASK;
+	
 	
 	while (!isPressed())
 	{
@@ -58,6 +61,15 @@ int main()
 			_delay_ms(100);
 		}
 	}
+	LED_PORT |= LED_MASK;
+	USART_TransmitBlock(&adc_values_current[read_order[0]],2);
+	USART_TransmitBlock(&adc_values_current[read_order[1]],2);
+	USART_TransmitBlock(&adc_values_current[read_order[2]],2);
+	USART_TransmitBlock(&adc_values_current[read_order[3]],2);
+	USART_TransmitBlock(&adc_values_current[read_order[4]],2);
+	USART_TransmitBlock(&adc_values_current[read_order[5]],2);
+	USART_TransmitBlock(&adc_values_current[read_order[6]],2);
+	USART_TransmitBlock(&adc_values_current[read_order[7]],2);
 	
 	while (1) ;
 	return 0;

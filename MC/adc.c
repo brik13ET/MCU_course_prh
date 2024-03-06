@@ -4,6 +4,7 @@
 #include "pins.h"
 
 uint16_t avg = 0;
+uint16_t adc_values_current[8];
 
 void ADC_Init(void)
 {

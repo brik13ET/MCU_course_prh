@@ -3,3 +3,4 @@
 #include <stdbool.h>
 
 void INT_Init(void);
+bool isPressed();

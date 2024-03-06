@@ -1,6 +1,7 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/sfr_defs.h>
 
 // ATMEGA8535 DATASHEET - DOC2502 - p.172
 // 19_200 baudrate -> UBRR = 25 && X2 == 0
@@ -45,4 +46,12 @@ void USART_Transmit( uint8_t data ) //Функция отправки данных
 {
 	loop_until_bit_is_set(UCSRA, UDRE);
 	UDR = data; //Начало передачи данных
+}
+
+void USART_TransmitBlock( void* data, uint16_t siz )
+{
+	for (uint8_t i = 0; i < siz; i++)
+		USART_Transmit(
+		((uint8_t*)data)[i]);
+	
 }
