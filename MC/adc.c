@@ -9,7 +9,7 @@ uint16_t adc_values_current[8];
 void ADC_Init(void)
 {
 	ADCSRA |= (1 << ADEN) |( 1 << ADPS0 ) | ( 1 << ADPS1 ) | ( 1 << ADPS2 );
-	ADMUX = (1 << REFS0) | 0;
+	ADMUX = 0;
 	ADC_DDR = 0;
 	ADC_PORT = 0;
 }
@@ -17,11 +17,9 @@ void ADC_Init(void)
 uint16_t ADC_avg16(uint8_t ch)
 {
 	uint8_t sampli = 0;
-//	uint16_t avg = 0;
-//	for (chi = 0; chi < 8; chi ++)
 	avg = 0;
-		for(sampli = 0; sampli < 16; sampli ++)
-			avg += ADC_ReadChannel(ch);
+	for(sampli = 0; sampli < 16; sampli ++)
+		avg += ADC_ReadChannel(ch);
 	avg >>= 4;
 	return avg;
 }

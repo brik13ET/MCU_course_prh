@@ -25,11 +25,20 @@ void bcd_print(uint16_t n)
 		(n % 100)  / 10,
 		 n % 10,
 	};
-	for (i = 0; i < 4; i ++)
+	
+	uint8_t dn_count = bcd[0] ? 4 : bcd[1] ? 3 : bcd[2] ? 2 : 1;
+	
+	for (i = 0; i < 4 ; i ++)
 	{
+		if (i < (4 - dn_count))
+		{
+			D_PORT = 0;
+			continue;
+		}
 		D_PORT = _7seg[bcd[i]];
 		DC_PORT &= ~(DC_1_MASK | DC_2_MASK);
-		DC_PORT |=  (i & 1 ? DC_1_MASK : 0) | ( i & 2 ? DC_2_MASK : 0);
+		uint8_t dc_i = (4 - dn_count) + i;
+		DC_PORT |=  ( dc_i & 1 ? DC_1_MASK : 0) | ( dc_i & 2 ? DC_2_MASK : 0);
 		_delay_ms(70);
 	}
 }
